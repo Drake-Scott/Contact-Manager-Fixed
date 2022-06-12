@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="js/code.js"></script>
+		<title>Welcome!</title>
+		<link rel="stylesheet" href="css/signup.css" />
+	</head>
+	<body>
+		<div class="center">
+			<h1>New User</h1>
+			<form id="registerForm" method="post">
+				<div class="txt_field">
+					<input id="loginName" type="text" required />
+					<span></span>
+					<label>Username</label>
+				</div>
+				<div class="txt_field">
+					<input id="firstName" type="text" required />
+					<span></span>
+					<label>First Name</label>
+				</div>
+				<div class="txt_field">
+					<input id="lastName" type="text" required />
+					<span></span>
+					<label>Last Name</label>
+				</div>
+
+				<div class="txt_field">
+					<input id="loginPassword1" type="password" required />
+					<span></span>
+					<label>Password</label>
+				</div>
+				<div class="txt_field">
+					<input id="loginPassword2" type="password" required />
+					<span></span>
+					<label>Confirm password</label>
+				</div>
+				<input
+					id="registerResult"
+					type="button"
+					value="Create Account"
+					onclick="doRegister(event)"
+				/>
+				<div class="login_link">
+					Already registered? <a href="login.html">Sign in</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
