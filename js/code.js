@@ -5,7 +5,6 @@ const src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 let userId = 0;
 let firstName = "";
 let lastName = "";
-//window.onload = displayContacts();
 
 // Every time we search more contacts, empty this and re-fill it.
 let contactRecords = [];
@@ -201,6 +200,7 @@ function doDeleteContact(contactID)
         {
             //document.getElementById("contactDeleteResult").innerHTML = err.message;
         }
+		location.reload();
     }
 }
 
@@ -211,6 +211,12 @@ function doAddContact() {
 	var last = document.getElementById("lastName").value;
 	var phone = document.getElementById("phone").value;
 	var email = document.getElementById("email").value;
+
+	if(!email.includes("@"))
+	{
+		alert("Please Enter a valid email.");
+				return false;
+	}
 
 	let tmp = {
 		userID: userId,
@@ -434,8 +440,7 @@ $(document).on("click", ".deletebtn", function () {
 	const oldContact = getFullContactObj(tr);
 
 	doDeleteContact(oldContact.ID);
-	displayContacts();
-	let counter = 0;
+	// displayContacts();
 
 	// $(this)
 	// 	.parent()
@@ -450,10 +455,4 @@ $(document).on("click", ".deletebtn", function () {
 	// 		else if (counter === 3) infoToDelete.email = content;
 	// 		counter++;
 	// 	});
-
-	// console.log(infoToDelete);
-
-	// TODO: Delete contact API, make sure table refreshes
-	// Again, I may not have collected the right data for the API call.
-	// I can consult as needed, but if you can think of a good way to collect it please do so.
 });
