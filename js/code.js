@@ -37,8 +37,8 @@ function doLogin(event) {
 				userId = jsonObject.id;
 
 				if (userId < 1) {
-					document.getElementById("loginResult").innerHTML =
-						"User/Password combination incorrect";
+					document.getElementById("loginMessage").innerHTML =
+						"Incorrect username or password.";
 					return;
 				}
 
@@ -52,7 +52,7 @@ function doLogin(event) {
 		};
 		xhr.send(jsonPayload);
 	} catch (err) {
-		document.getElementById("loginResult").innerHTML = err.message;
+		document.getElementById("loginMessage").innerHTML = err.message;
 	}
 }
 
