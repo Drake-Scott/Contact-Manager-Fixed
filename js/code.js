@@ -418,17 +418,6 @@ $(document).on("click", ".savebtn", function () {
 
 	console.log("old info: " + oldInfo);
 	console.log("new info: " + newInfo);
-
-	// TODO: Update API with the data in newInfo
-	// IDK how the update info works so this might be tricky. A suggestion with lots of effort required:
-	// Set the user data to an array that is persistent and updated any time we query new contacts
-	// Create a function for the building table rows based on what is in that array (move the existing logic to it)
-	// Make a userID column that is ineditable or some other way of finding their ID
-	// Use that ID to get the old data in the persistent array and delete it
-	// Then add the new contact
-
-	// I may not have collected the right data for the API call.
-	// I can consult as needed, but if you can think of a good way to collect it please do so.
 });
 
 $(document).on("click", ".deletebtn", function () {
@@ -440,19 +429,5 @@ $(document).on("click", ".deletebtn", function () {
 	const oldContact = getFullContactObj(tr);
 
 	doDeleteContact(oldContact.ID);
-	// displayContacts();
 
-	// $(this)
-	// 	.parent()
-	// 	.parent()
-	// 	.siblings("td")
-	// 	.each(function () {
-	// 		var content = $(this).html();
-	// 		console.log(this, content);
-	// 		if (counter === 0) infoToDelete.firstName = content;
-	// 		else if (counter === 1) infoToDelete.lastName = content;
-	// 		else if (counter === 2) infoToDelete.phone = content;
-	// 		else if (counter === 3) infoToDelete.email = content;
-	// 		counter++;
-	// 	});
 });
