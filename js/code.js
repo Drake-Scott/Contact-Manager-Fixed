@@ -81,11 +81,8 @@ function doRegister(event) {
 		xhr.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				let jsonObject = JSON.parse(xhr.responseText);
-				// if( userId < 1 )
-				// {
-				// 	document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-				// 	return;
-				// }
+				$("#msg").html("Successfully registered!");
+				
 				window.location.href = "login.html";
 			}
 		};
