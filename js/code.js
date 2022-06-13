@@ -262,6 +262,7 @@ function doAddContact() {
 			if (this.readyState == 4 && this.status == 200) {
 				document.getElementById("contactAddResult").innerHTML =
 					"Contact has been added";
+				alert("Contact successfully added.");
 			}
 		};
 		xhr.send(jsonPayload);
@@ -324,9 +325,8 @@ function doUpdateUser(event) {
 	let first = document.getElementById("firstName").value;
 	let last = document.getElementById("lastName").value;
 	let login = document.getElementById("loginName").value;
-	let pass = document.getElementById("loginPassword1").value;
 
-	if (first == "" || last == "" || login == "" || pass == "") {
+	if (first == "" || last == "" || login == "") {
 		alert("Empty fields are not allowed!");
 		return;
 	}
@@ -336,7 +336,6 @@ function doUpdateUser(event) {
 		firstName: first,
 		lastName: last,
 		login: login,
-		password: pass,
 	};
 	let jsonPayload = JSON.stringify(tmp);
 
@@ -348,15 +347,18 @@ function doUpdateUser(event) {
 	try {
 		xhr.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
-				console.debug("user updated.");
+				//let jsonObject = JSON.parse(xhr.responseText);
+				//console.debug("error: " + jsonObject.error);
 				alert("Updated user successfully! Please log in again.");
+				doLogout();
 			}
-			doLogout();
 		};
 		xhr.send(jsonPayload);
 	} catch (err) {
+		console.err(err, err.message);
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
+	saveCookie();
 }
 
 function searchColor() {
