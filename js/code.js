@@ -5,6 +5,7 @@ const src = "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js";
 let userId = 0;
 let firstName = "";
 let lastName = "";
+let username = "";
 
 // Every time we search more contacts, empty this and re-fill it.
 let contactRecords = [];
@@ -33,6 +34,7 @@ function doLogin(event) {
 		xhr.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				let jsonObject = JSON.parse(xhr.responseText);
+				console.log(jsonObject);
 				userId = jsonObject.id;
 
 				if (userId < 1) {
@@ -43,6 +45,7 @@ function doLogin(event) {
 
 				firstName = jsonObject.firstName;
 				lastName = jsonObject.lastName;
+				username = login;
 
 				saveCookie();
 
@@ -64,15 +67,18 @@ function doRegister(event) {
 	let lastName = document.getElementById("lastName").value;
 
 	// Make sure every field is filled out correctly.
-	var infoValidator = ( login === "" || password === "" || password2 === "" || firstName === "" || lastName === "" );
-	if(infoValidator)
-	{
+	var infoValidator =
+		login === "" ||
+		password === "" ||
+		password2 === "" ||
+		firstName === "" ||
+		lastName === "";
+	if (infoValidator) {
 		alert("Please Enter a valid response in each field.");
 		return false;
 	}
 
-	if(password != password2)
-	{
+	if (password != password2) {
 		alert("Passwords do not match.");
 		return false;
 	}
@@ -116,6 +122,8 @@ function saveCookie() {
 		lastName +
 		",userId=" +
 		userId +
+		",username=" +
+		username +
 		";expires=" +
 		date.toGMTString();
 }
@@ -127,20 +135,26 @@ function readCookie() {
 	for (var i = 0; i < splits.length; i++) {
 		let thisOne = splits[i].trim();
 		let tokens = thisOne.split("=");
+		console.log(tokens);
 		if (tokens[0] == "firstName") {
 			firstName = tokens[1];
 		} else if (tokens[0] == "lastName") {
 			lastName = tokens[1];
 		} else if (tokens[0] == "userId") {
 			userId = parseInt(tokens[1].trim());
+		} else if (tokens[0] == "username") {
+			username = tokens[1];
 		}
 	}
 
 	if (userId < 0) {
 		//window.location.href = "index.html";
 	} else {
-		document.getElementById("userName").innerHTML =
-			"Logged in as " + firstName + " " + lastName;
+		var str = document.getElementById("userName");
+		if (str != null) {
+			document.getElementById("userName").innerHTML =
+				"Logged in as " + firstName + " " + lastName;
+		}
 	}
 }
 
@@ -148,6 +162,7 @@ function doLogout() {
 	userId = 0;
 	firstName = "";
 	lastName = "";
+	username = "";
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
 	window.location.href = "login.html";
 }
@@ -171,7 +186,7 @@ function doUpdateContact(newInfo) {
 	let url = urlBase + "/UpdateContact." + extension;
 
 	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);	
+	xhr.open("POST", url, true);
 	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
 	try {
 		xhr.onreadystatechange = function () {
@@ -186,36 +201,29 @@ function doUpdateContact(newInfo) {
 	}
 }
 
-function doDeleteContact(contactID)
-{
-    if (confirm("Are you sure you want to delete this contact?")) 
-	{
-        let tmp = {ID: contactID};
-        let jsonPayload = JSON.stringify(tmp);
+function doDeleteContact(contactID) {
+	if (confirm("Are you sure you want to delete this contact?")) {
+		let tmp = { ID: contactID };
+		let jsonPayload = JSON.stringify(tmp);
 
-        let url = urlBase + '/Delete.' + extension;
+		let url = urlBase + "/Delete." + extension;
 
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try
-        {
-            xhr.onreadystatechange = function() 
-            {
-                if (this.readyState == 4 && this.status == 200) 
-                {
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+		try {
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
 					console.log("Contact deleted.");
-                    //document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted!";
-                }
-            };
-            xhr.send(jsonPayload);
-        }
-        catch(err)
-        {
-            //document.getElementById("contactDeleteResult").innerHTML = err.message;
-        }
+					//document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted!";
+				}
+			};
+			xhr.send(jsonPayload);
+		} catch (err) {
+			//document.getElementById("contactDeleteResult").innerHTML = err.message;
+		}
 		location.reload();
-    }
+	}
 }
 
 function doAddContact() {
@@ -226,13 +234,11 @@ function doAddContact() {
 	var phone = document.getElementById("phone").value;
 	var email = document.getElementById("email").value;
 
-	if(first === "" || last === "" || phone === "" || email === "")
-	{
+	if (first === "" || last === "" || phone === "" || email === "") {
 		alert("Please Enter a valid response in each field.");
 		return false;
 	}
-	if(!email.includes("@"))
-	{
+	if (!email.includes("@")) {
 		alert("Please Enter a valid email.");
 		return false;
 	}
@@ -264,67 +270,74 @@ function doAddContact() {
 	}
 }
 
-function showModal()
-{
+function showModal() {
+	readCookie();
 	var accModal = document.getElementById("accModal");
 	accModal.style.display = "block";
 }
 
-function hideModal()
-{
+function hideModal() {
 	var span = document.getElementsByClassName("close")[0];
 	accModal.style.display = "none";
 }
 
-function doDeleteUser()
-{
-	
-	if (confirm("Are you sure you want to delete this Account?")) 
-	{
-		readCookie();
-		let tmp = {ID: userId};
-        window.location.href("login.html");
-        let jsonPayload = JSON.stringify(tmp);
+function populateTextFields() {
+	readCookie();
 
-        let url = urlBase + '/DeleteUser.' + extension;
-
-        let xhr = new XMLHttpRequest();
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-        try
-        {
-            xhr.onreadystatechange = function() 
-            {
-                if (this.readyState == 4 && this.status == 200) 
-                { 
-					console.log("Account deleted.");
-                    //document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted!";
-                }
-            };
-            xhr.send(jsonPayload);
-        }
-        catch(err)
-        {
-            //document.getElementById("contactDeleteResult").innerHTML = err.message;
-        }
-    }
+	console.log({ firstName, lastName, username });
+	document.getElementById("firstName").value = firstName;
+	document.getElementById("lastName").value = lastName;
+	document.getElementById("loginName").value = username;
 }
 
-function doUpdateUser()
-{
-	readCookie();
+function doDeleteUser() {
+	if (confirm("Are you sure you want to delete this Account?")) {
+		readCookie();
+		let tmp = { ID: userId };
+		let jsonPayload = JSON.stringify(tmp);
+
+		let url = urlBase + "/DeleteUser." + extension;
+
+		let xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+		try {
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					console.log("Account deleted.");
+					//document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted!";
+					hideModal();
+					doLogout();
+				}
+			};
+			xhr.send(jsonPayload);
+		} catch (err) {
+			//document.getElementById("contactDeleteResult").innerHTML = err.message;
+		}
+	}
+}
+
+function doUpdateUser(event) {
+	// console.log(event);
+	// event.preventDefault();
+
 	let first = document.getElementById("firstName").value;
 	let last = document.getElementById("lastName").value;
 	let login = document.getElementById("loginName").value;
 	let pass = document.getElementById("loginPassword1").value;
 
-	let tmp = {
-		"userID": userId,
-		"firstName": first,
-		"lastName": last,
-		"login": login,
-		"password": pass
+	if (first == "" || last == "" || login == "" || pass == "") {
+		alert("Empty fields are not allowed!");
+		return;
 	}
+
+	let tmp = {
+		userID: userId,
+		firstName: first,
+		lastName: last,
+		login: login,
+		password: pass,
+	};
 	let jsonPayload = JSON.stringify(tmp);
 
 	let url = urlBase + "/UpdateUser." + extension;
@@ -336,14 +349,14 @@ function doUpdateUser()
 		xhr.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				console.debug("user updated.");
+				alert("Updated user successfully! Please log in again.");
 			}
+			doLogout();
 		};
 		xhr.send(jsonPayload);
 	} catch (err) {
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
-	saveCookie();
-	window.location.href = "login.html";
 }
 
 function searchColor() {
@@ -530,5 +543,4 @@ $(document).on("click", ".deletebtn", function () {
 	const oldContact = getFullContactObj(tr);
 
 	doDeleteContact(oldContact.ID);
-
 });
