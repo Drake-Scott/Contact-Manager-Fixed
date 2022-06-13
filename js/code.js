@@ -284,7 +284,37 @@ function doDeleteUser()
 
 function doUpdateUser()
 {
+	readCookie();
+	let first = document.getElementById("firstName").value;
+	let last = document.getElementById("lastName").value;
+	let login = document.getElementById("loginName").value;
+	let pass = document.getElementById("loginPassword1").value;
 
+	let tmp = {
+		"userID": userId,
+		"firstName": first,
+		"lastName": last,
+		"login": login,
+		"password": pass
+	}
+	let jsonPayload = JSON.stringify(tmp);
+
+	let url = urlBase + "/UpdateUser." + extension;
+
+	let xhr = new XMLHttpRequest();
+	xhr.open("POST", url, true);
+	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+	try {
+		xhr.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				console.debug("user updated.");
+			}
+		};
+		xhr.send(jsonPayload);
+	} catch (err) {
+		document.getElementById("contactAddResult").innerHTML = err.message;
+	}
+	window.location.href = "login.html";
 }
 
 function searchColor() {
