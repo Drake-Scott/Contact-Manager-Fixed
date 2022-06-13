@@ -299,6 +299,11 @@ function hideModal()
 
 function doDeleteUser()
 {
+	// PERHAPS prompt user for their password in a popup menu before deleting the account.
+}
+
+function doUpdateUser()
+{
 
 }
 
