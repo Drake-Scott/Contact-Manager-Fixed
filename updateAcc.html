@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8" />
+		<script type="text/javascript" src="js/code.js"></script>
+		<title>Update acc</title>
+		<link rel="stylesheet" href="css/updateAcc.css" />
+	</head>
+	<body>
+		<div class="center">
+			<h1>Edit acc info</h1>
+			<form id="registerForm" method="post">
+				<div class="txt_field">
+					<input id="loginName" placeholder="" type="text" required />
+					<span></span>
+					<label>Username</label>
+				</div>
+				<div class="txt_field">
+					<input id="firstName" placeholder="" type="text" required />
+					<span></span>
+					<label>First Name</label>
+				</div>
+				<div class="txt_field">
+					<input id="lastName" placeholder="" type="text" required />
+					<span></span>
+					<label>Last Name</label>
+				</div>
+
+				<div class="txt_field">
+					<input id="loginPassword1" type="password" required />
+					<span></span>
+					<label>Password</label>
+				</div>
+				<input
+					id="registerResult"
+					type="button"
+					value="Update Account"
+					onclick="doUpdateUser()" /><!-- will call update account function in js onclick -->
+				<div class="login_link">
+					<a href="displayContacts.html">Home</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
