@@ -6,26 +6,6 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
-// var accModal = document.getElementById("accModal");
-// var accSettingsBtn = document.getElementById("accSettingsBtn");
-// var span = document.getElementsByClassName("close")[0];
-
-// accSettingsBtn.onclick = function(){
-//     accModal.style.display = "block";
-// }
-
-// span.onclick = function() {
-//     accModal.style.display = "none";
-// }
-
-// window.onclick = function(event){
-//     if(event.target == accModal){
-//        accModal.style.display = "none"; 
-//     }
-// }
-
-
-
 // Every time we search more contacts, empty this and re-fill it.
 let contactRecords = [];
 
