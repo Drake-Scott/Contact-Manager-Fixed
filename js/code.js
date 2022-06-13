@@ -6,6 +6,26 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+// var accModal = document.getElementById("accModal");
+// var accSettingsBtn = document.getElementById("accSettingsBtn");
+// var span = document.getElementsByClassName("close")[0];
+
+// accSettingsBtn.onclick = function(){
+//     accModal.style.display = "block";
+// }
+
+// span.onclick = function() {
+//     accModal.style.display = "none";
+// }
+
+// window.onclick = function(event){
+//     if(event.target == accModal){
+//        accModal.style.display = "none"; 
+//     }
+// }
+
+
+
 // Every time we search more contacts, empty this and re-fill it.
 let contactRecords = [];
 
@@ -62,6 +82,20 @@ function doRegister(event) {
 	let password2 = document.getElementById("loginPassword2").value;
 	let firstName = document.getElementById("firstName").value;
 	let lastName = document.getElementById("lastName").value;
+
+	// Make sure every field is filled out correctly.
+	var infoValidator = ( login === "" || password === "" || password2 === "" || firstName === "" || lastName === "" );
+	if(infoValidator)
+	{
+		alert("Please Enter a valid response in each field.");
+		return false;
+	}
+
+	if(password != password2)
+	{
+		alert("Passwords do not match.");
+		return false;
+	}
 
 	let tmp = {
 		firstName: firstName,
@@ -212,11 +246,17 @@ function doAddContact() {
 	var phone = document.getElementById("phone").value;
 	var email = document.getElementById("email").value;
 
+	if(first === "" || last === "" || phone === "" || email === "")
+	{
+		alert("Please Enter a valid response in each field.");
+		return false;
+	}
 	if(!email.includes("@"))
 	{
 		alert("Please Enter a valid email.");
-				return false;
+		return false;
 	}
+
 
 	let tmp = {
 		userID: userId,
@@ -243,6 +283,23 @@ function doAddContact() {
 	} catch (err) {
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
+}
+
+function showModal()
+{
+	var accModal = document.getElementById("accModal");
+	accModal.style.display = "block";
+}
+
+function hideModal()
+{
+	var span = document.getElementsByClassName("close")[0];
+	accModal.style.display = "none";
+}
+
+function doDeleteUser()
+{
+
 }
 
 function searchColor() {
