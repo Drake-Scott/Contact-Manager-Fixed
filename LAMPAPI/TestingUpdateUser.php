@@ -5,7 +5,7 @@
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
     $login = $inData["login"];
-	$password = $inData["password"];
+	//$password = $inData["password"];
     
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
 	if ($conn->connect_error) 
@@ -14,30 +14,34 @@
 	} 
 	else
 	{
-		$select = mysqli_query($conn, "SELECT * FROM users WHERE username = '".$login."'");
-		if(mysqli_num_rows($select)) {
-			exit('This username already exists');
-		}
-		// search through users and check if the login has an exact match already.
-		// $stmt = $conn->prepare("SELECT * FROM Users WHERE Login=?");
-		// $stmt->bind_param("s", $login);
-		// $stmt->execute();
-		// $result = $stmt->get_result();
-
-		// $sql = "SELECT * FROM Users WHERE Login=".$login;
+		// $sql = "SELECT * FROM Users WHERE Login=?";
 		// $result = $conn->query($sql);
-		while($row = $result->fetch_assoc()) 
-		{
-			if($row["ID"] != $userID)
+
+		$stmt = $conn->prepare("SELECT * FROM Users WHERE Login=?");
+		$stmt->bind_param("s", $login);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$row = $result->fetch_assoc();
+		if($row["ID"] != $userID)
 			{
 				$stmt->close();
 				$conn->close();
 				returnWithError("Login already exists.");
 			}
-		}
 
-		$stmt = $conn->prepare("UPDATE Users SET FirstName=?, LastName=?, Login=?, Password=? WHERE ID=?");
-		$stmt->bind_param("ssssi", $firstName ,$lastName, $login, $password, $userID);
+		// while($row = $result->fetch_assoc()) 
+		// {
+		// 	if($row["ID"] != $userID)
+		// 	{
+		// 		$stmt->close();
+		// 		$conn->close();
+		// 		returnWithError("Login already exists.");
+		// 	}
+		// }
+		
+		$stmt->close();
+		$stmt = $conn->prepare("UPDATE Users SET FirstName=?, LastName=?, Login=? WHERE ID=?");
+		$stmt->bind_param("sssi", $firstName ,$lastName, $login, $userID);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();

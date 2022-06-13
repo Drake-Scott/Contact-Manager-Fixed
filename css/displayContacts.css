@@ -31,14 +31,15 @@ body {
 
 .center h1 {
 	text-align: center;
-	padding: 20px 0;
+	color: #1a3357;
+	padding: 8px 0;
 	border-bottom: 1px solid silver;
 }
 
 .center h3 {
 	text-align: center;
-	color: firebrick;
-	padding: 20px 0;
+	color: #2691d9;
+	padding: 8px 0;
 	border-bottom: 1px solid silver;
 }
 
