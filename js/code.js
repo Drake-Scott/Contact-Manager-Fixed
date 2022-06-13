@@ -237,7 +237,6 @@ function doAddContact() {
 		return false;
 	}
 
-
 	let tmp = {
 		userID: userId,
 		firstName: first,
@@ -279,7 +278,36 @@ function hideModal()
 
 function doDeleteUser()
 {
-	// PERHAPS prompt user for their password in a popup menu before deleting the account.
+	
+	if (confirm("Are you sure you want to delete this Account?")) 
+	{
+		readCookie();
+		let tmp = {ID: userId};
+        window.location.href("login.html");
+        let jsonPayload = JSON.stringify(tmp);
+
+        let url = urlBase + '/DeleteUser.' + extension;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
+        try
+        {
+            xhr.onreadystatechange = function() 
+            {
+                if (this.readyState == 4 && this.status == 200) 
+                { 
+					console.log("Account deleted.");
+                    //document.getElementById("contactDeleteResult").innerHTML = "Contact has been deleted!";
+                }
+            };
+            xhr.send(jsonPayload);
+        }
+        catch(err)
+        {
+            //document.getElementById("contactDeleteResult").innerHTML = err.message;
+        }
+    }
 }
 
 function doUpdateUser()
@@ -314,6 +342,7 @@ function doUpdateUser()
 	} catch (err) {
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
+	saveCookie();
 	window.location.href = "login.html";
 }
 
