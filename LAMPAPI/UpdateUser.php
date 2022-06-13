@@ -4,7 +4,7 @@
     $userID =  $inData["userID"];
 	$firstName = $inData["firstName"];
 	$lastName = $inData["lastName"];
-    $login = $inData["login"];
+    //$login = $inData["login"];
 	//$password = $inData["password"];
     
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "COP4331");
@@ -16,8 +16,8 @@
 	{
 		// $stmt = $conn->prepare("UPDATE Users SET FirstName=?, LastName=?, Login=?, Password=? WHERE ID=?");
 		// $stmt->bind_param("ssssi", $firstName ,$lastName, $login, $password, $userID);
-		$stmt = $conn->prepare("UPDATE Users SET FirstName=?, LastName=?, Login=? WHERE ID=?");
-		$stmt->bind_param("sssi", $firstName ,$lastName, $login, $userID);
+		$stmt = $conn->prepare("UPDATE Users SET FirstName=?, LastName=? WHERE ID=?");
+		$stmt->bind_param("ssi", $firstName ,$lastName, $userID);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();

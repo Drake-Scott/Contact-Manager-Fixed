@@ -288,7 +288,7 @@ function populateTextFields() {
 	console.log({ firstName, lastName, username });
 	document.getElementById("firstName").value = firstName;
 	document.getElementById("lastName").value = lastName;
-	document.getElementById("loginName").value = username;
+	//document.getElementById("loginName").value = username;
 }
 
 function doDeleteUser() {
@@ -324,9 +324,9 @@ function doUpdateUser(event) {
 
 	let first = document.getElementById("firstName").value;
 	let last = document.getElementById("lastName").value;
-	let login = document.getElementById("loginName").value;
+	//let login = document.getElementById("loginName").value;
 
-	if (first == "" || last == "" || login == "") {
+	if (first == "" || last == "") {
 		alert("Empty fields are not allowed!");
 		return;
 	}
@@ -335,7 +335,7 @@ function doUpdateUser(event) {
 		userID: userId,
 		firstName: first,
 		lastName: last,
-		login: login,
+		//login: login,
 	};
 	let jsonPayload = JSON.stringify(tmp);
 
@@ -349,8 +349,11 @@ function doUpdateUser(event) {
 			if (this.readyState == 4 && this.status == 200) {
 				//let jsonObject = JSON.parse(xhr.responseText);
 				//console.debug("error: " + jsonObject.error);
-				alert("Updated user successfully! Please log in again.");
+				
+				alert("Updated user successfully! Login again.");
 				doLogout();
+				// window.location.replace("displayContacts.html")
+				// window.reload();
 			}
 		};
 		xhr.send(jsonPayload);
@@ -358,7 +361,7 @@ function doUpdateUser(event) {
 		console.err(err, err.message);
 		document.getElementById("contactAddResult").innerHTML = err.message;
 	}
-	saveCookie();
+	
 }
 
 function searchColor() {
